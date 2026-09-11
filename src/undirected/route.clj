@@ -4,7 +4,7 @@
             [undirected.graph :as g]))
 
 (defn make-route [vertices]
-  {:vertices vertices
+  {:vertices (vec vertices)
    :edges    (vec (map make-edge (consecutive-pairs vertices)))})
 
 (defn route [& vertices]
@@ -26,6 +26,9 @@
   (???))
 
 (defn contains-vertex? [route vertex]
+  (???))
+
+(defn add-vertex [route vertex]
   (???))
 
 (defn subroute? [subroute route]

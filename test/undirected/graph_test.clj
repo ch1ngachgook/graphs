@@ -138,6 +138,10 @@
   (is (= (graph [A B] [A B]) (complete-graph [A B])))
   (is (= (graph [A B C] [A B] [A C] [B C]) (complete-graph [A B C]))))
 
+(deftest one-edge-graph-test
+  (is (= (graph [A B] [A B])
+         (one-edge-graph (edge A B)))))
+
 (deftest subgraph?-test
   (let [g1 (graph [A B] [A B])
         g2 (graph [A B C D] [A B] [C D])
@@ -178,6 +182,14 @@
     (is (= g3 (intersection g1 g3)))
     (is (= (graph []) (intersection g2 g3)))
     (is (= g4 (difference g1 g3)))))
+
+(deftest add-edge-test
+  (is (= (graph [A B C] [A B] [B C])
+         (add-edge (graph [A B] [A B]) (edge B C)))))
+
+(deftest remove-edge-test
+  (is (= (graph [A B C] [A B])
+         (remove-edge (graph [A B C] [A B] [B C]) (edge B C)))))
 
 (deftest disjoint-test
   (is (disjoint? (graph [A B] [A B]) (graph [C D] [C D])))
