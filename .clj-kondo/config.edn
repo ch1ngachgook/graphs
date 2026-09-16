@@ -1,4 +1,4 @@
 {:linters {:inline-def        {:level :off}
            :refer-all         {:level :off}
            :use               {:level :off}
-           :unresolved-symbol {:exclude [thrown?]}}}
+           :unresolved-symbol {:level :off :exclude [thrown?]}}}

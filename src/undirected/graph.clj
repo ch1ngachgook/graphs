@@ -23,34 +23,35 @@
   (:edges graph))
 
 (defn contains-vertex? [graph vertex]
-  (???))
+  (contains? (vertices graph) vertex))
 
 (defn contains-edge? [graph edge]
-  (???))
+  (contains? (edges graph) edge))
 
 (defn order [graph]
-  (???))
+  (count (vertices graph)))
 
 (defn edge-count [graph]
-  (???))
+  (count (edges graph)))
 
 (defn incident-edges [graph vertex]
   {:pre [(contains-vertex? graph vertex)]}
-  (???))
+  (set (filter #(e/incident? % vertex)(edges graph))))
 
 (defn adjacent-vertices [graph vertex]
   {:pre [(contains-vertex? graph vertex)]}
-  (???))
+  (set(map #(e/other-end % vertex) (incident-edges graph vertex))))
 
 (defn adjacent? [graph v1 v2]
   {:pre [(contains-vertex? graph v1) (contains-vertex? graph v2)]}
-  (???))
+  (contains? (adjacent-vertices graph v1) v2))
 
 (defn degree [graph vertex]
-  (???))
+  {:pre [(contains-vertex? graph vertex)]}
+  (count (incident-edges graph vertex)))
 
 (defn degrees [graph]
-  (???))
+  (map #(degree graph %) (vertices graph)))
 
 (defn pendant? [graph vertex]
   (???))
