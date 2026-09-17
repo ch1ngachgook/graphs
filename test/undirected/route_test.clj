@@ -34,7 +34,7 @@
   (is (= (route A B) (add-vertex (route A) B)))
   (is (= (route A B C) (add-vertex (route A B) C))))
 
-(deftest route-contains?-test
+(deftest subroute?-test
   (is (subroute? (route A B) (route A B)))
   (is (subroute? (route A B) (route A B C B)))
   (is (subroute? (route A B D) (route A B C B D)))
