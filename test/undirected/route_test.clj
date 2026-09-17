@@ -30,7 +30,11 @@
     (is (contains-vertex? r B))
     (is (not (contains-vertex? r C)))))
 
-(deftest route-contains?-test
+(deftest add-vertex-test
+  (is (= (route A B) (add-vertex (route A) B)))
+  (is (= (route A B C) (add-vertex (route A B) C))))
+
+(deftest subroute?-test
   (is (subroute? (route A B) (route A B)))
   (is (subroute? (route A B) (route A B C B)))
   (is (subroute? (route A B D) (route A B C B D)))

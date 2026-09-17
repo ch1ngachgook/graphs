@@ -74,6 +74,9 @@
 (defn complete-graph [vertices]
   (apply graph vertices (pairs vertices))); Hint: use utils/pairs
 
+(defn one-edge-graph [edge]
+  (???))
+
 (defn subgraph? [g1 g2]
   (???))
 
@@ -84,6 +87,12 @@
   (???))
 
 (defn difference [g1 g2]
+  (???))
+
+(defn add-edge [graph edge]
+  (???))
+
+(defn remove-edge [graph edge]
   (???))
 
 (defn disjoint? [g1 g2]
