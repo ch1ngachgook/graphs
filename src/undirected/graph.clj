@@ -54,22 +54,25 @@
   (map #(degree graph %) (vertices graph)))
 
 (defn pendant? [graph vertex]
-  (???))
+  {:pre [(contains-vertex? graph vertex)]}
+  (= 1 (degree graph vertex)))
 
 (defn isolated? [graph vertex]
-  (???))
+  {:pre [(contains-vertex? graph vertex)]}
+  (= 0 (degree graph vertex)))
 
 (defn empty-graph? [graph]
-  (???))
+    (empty? (edges graph)))
 
 (defn empty-graph [vertices]
-  (???))
+  (graph vertices))
 
 (defn complete-graph? [graph]
-  (???))
+  (let [n (order graph)]
+      (= (edge-count graph) (quot (* n (dec n)) 2))))
 
 (defn complete-graph [vertices]
-  (???))  ; Hint: use utils/pairs
+  (apply graph vertices (pairs vertices))); Hint: use utils/pairs
 
 (defn subgraph? [g1 g2]
   (???))
