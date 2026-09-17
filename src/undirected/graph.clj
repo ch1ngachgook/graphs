@@ -74,29 +74,36 @@
 (defn complete-graph [vertices]
   (apply graph vertices (pairs vertices))); Hint: use utils/pairs
 
-(defn one-edge-graph [edge]
-  (???))
+(defn one-edge-graph [v1 v2]
+  (graph [v1 v2] [v1 v2]))
 
 (defn subgraph? [g1 g2]
-  (???))
+  (and (set/subset? (vertices g1) (vertices g2))
+       (set/subset? (edges g1)    (edges g2))))
 
 (defn union [g1 g2]
-  (???))
+  (make-graph (set/union (vertices g1) (vertices g2))
+              (set/union (edges g1)    (edges g2))))
 
 (defn intersection [g1 g2]
-  (???))
+  (make-graph (set/intersection (vertices g1) (vertices g2))
+              (set/intersection (edges g1)    (edges g2))))
 
 (defn difference [g1 g2]
-  (???))
+  (make-graph (vertices g1)
+              (set/difference (edges g1) (edges g2))))
 
-(defn add-edge [graph edge]
-  (???))
+(defn add-edge [graph e]
+  (make-graph (set/union (vertices graph) (e/ends e))
+              (conj (edges graph) e)))
 
-(defn remove-edge [graph edge]
-  (???))
+(defn remove-edge [graph e]
+  (make-graph (vertices graph)
+              (disj (edges graph) e)))
 
 (defn disjoint? [g1 g2]
-  (???))
+  (empty? (set/intersection (vertices g1) (vertices g2))))
 
 (defn mutually-disjoint? [graphs]
-  (???))  ; Hint: use utils/pairs
+  (every? (fn [[g1 g2]] (disjoint? g1 g2))
+          (pairs graphs)))  ; Hint: use utils/pairs
