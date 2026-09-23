@@ -7,7 +7,7 @@
   (let [vertices (sort (g/vertices graph))]
     (for [v1 vertices]
       (for [v2 vertices]
-        (if (???)
+        (if (g/adjacent? graph v1 v2)
           1
           0)))))
 
@@ -16,6 +16,6 @@
         vertices (sort (g/vertices graph))]
     (for [e edges]
       (for [v vertices]
-        (if (???)
+        (if (e/incident? e v)
           1
           0)))))
