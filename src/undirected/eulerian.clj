@@ -8,13 +8,15 @@
     [utils :refer [???]]))
 
 (defn odd-vertices [graph]
-  (???))
+  (set (filter #(odd? (g/degree graph %)) (g/vertices graph))))
 
 (defn eulerian? [graph]
-  (???))
+  (and (connected? graph)
+       (empty? (odd-vertices graph))))
 
 (defn semi-eulerian? [graph]
-  (???))
+  (and (connected? graph)
+       (<= (count (odd-vertices graph)) 2)))
 
 (defn- split-at-vertex [v vertices]
   (split-with (fn [u] (not= u v))
@@ -24,18 +26,20 @@
   {:pre  [(r/contains-vertex? route vertex) (r/cycle? route)]
    :post [(= (r/length route) (r/length %)) (= vertex (r/start %))]}
   (if (= vertex (r/start route))
-    (???)
+    route
     (let [[before after] (split-at-vertex vertex (r/vertices route))]
-      (make-route (???)))))
+      (make-route (concat (butlast after) before [vertex])))))
 
 (defn merge-routes-at [r1 r2 v]
   {:pre [(r/contains-vertex? r1 v) (r/contains-vertex? r2 v) (r/cycle? r2)]}
   (let [[before after] (split-at-vertex v (r/vertices r1))
         middle (r/vertices (rotate-cycle-to-start-from r2 v))]
-    (make-route (???))))
+    (make-route (concat before middle (rest after)))))
 
 (defn merge-routes [r1 r2]
-  (???))
+  (let [common (first (set/intersection (set (r/vertices r1))
+                                        (set (r/vertices r2))))]
+    (merge-routes-at r1 r2 common)))
 
 (defn find-longest-route [graph start]
   {:pre [(g/contains-vertex? graph start)]}
@@ -43,11 +47,11 @@
          v start
          gr graph]
     (if (g/isolated? gr v)
-      (???)
+      r
       (let [next-v (first (g/adjacent-vertices gr v))]
-        (recur (???)
-               (???)
-               (???))))))
+        (recur (make-route (conj (r/vertices r) next-v))
+               next-v
+               (g/remove-edge gr (edge v next-v)))))))
 
 (declare find-eulerian-cycle)
 
@@ -62,12 +66,12 @@
 
 (defn find-eulerian-cycle [graph]
   {:pre [(eulerian? graph)]}
-  (find-eulerian-path graph (???)))
+  (find-eulerian-path graph (first (sort (g/vertices graph)))))
 
 (defn find-eulerian-chain [graph]
   {:pre [(semi-eulerian? graph)]}
   (let [odd-vs (odd-vertices graph)
         start (if (empty? odd-vs)
-                (???)
-                (???))]
+                (first (sort (g/vertices graph)))
+                (first (sort odd-vs)))]
     (find-eulerian-path graph start)))

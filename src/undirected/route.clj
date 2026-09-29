@@ -32,11 +32,11 @@
   (make-route (conj (vertices route) vertex)))
 
 (defn subroute? [subroute route]
-  (subsequence? (vertices sub) (vertices route)))
+  (subsequence? (vertices subroute) (vertices route)))
 
 (defn route->graph [route]
   (g/make-graph (set (vertices route))
-                (set (edges route))))
+                (vec (edges route))))
 
 (defn graph-contains-route? [graph route]
   (g/subgraph? (route->graph route) graph))
