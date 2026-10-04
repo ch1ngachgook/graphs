@@ -1,5 +1,5 @@
 (ns undirected.route
-  (:require [utils :refer [consecutive-pairs subsequence? all-distinct? ???]]
+  (:require [utils :refer [consecutive-pairs subsequence? all-distinct?]]
             [undirected.edge :refer [make-edge]]
             [undirected.graph :as g]))
 
@@ -36,7 +36,7 @@
 
 (defn route->graph [route]
   (g/make-graph (set (vertices route))
-                (vec (edges route))))
+                (set (edges route))))
 
 (defn graph-contains-route? [graph route]
   (g/subgraph? (route->graph route) graph))
@@ -73,11 +73,10 @@
     (if (empty? remaining)
       chain
       (let [v (first remaining)
-            chain-without-v (if (some #{v} chain)
-                              (vec (take (inc (.indexOf chain v)) chain))
-                              chain)]
-        (recur (conj chain-without-v v)
-               (rest remaining))))))
+            chain' (if (some #{v} chain)
+                     (vec (take (inc (.indexOf chain v)) chain))
+                     (conj chain v))]
+        (recur chain' (rest remaining))))))
 
 (defn extract-simple-chain [route]
   {:pre  [(not (cyclic? route))]

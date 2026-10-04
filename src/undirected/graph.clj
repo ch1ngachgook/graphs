@@ -74,8 +74,8 @@
 (defn complete-graph [vertices]
   (apply graph vertices (pairs vertices))); Hint: use utils/pairs
 
-(defn one-edge-graph [v1 v2]
-  (graph [v1 v2] [v1 v2]))
+(defn one-edge-graph [edge]
+  (make-graph (e/ends edge) #{edge}))
 
 (defn subgraph? [g1 g2]
   (and (set/subset? (vertices g1) (vertices g2))
