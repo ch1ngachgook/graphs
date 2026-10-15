@@ -25,14 +25,15 @@
   (:arcs graph))
 
 (defn contains-vertex? [graph vertex]
-  (???))
+  (contains? (vertices graph) vertex))
 
 (defn contains-arc? [graph arc]
   (???))
 
 (defn neighbours [graph vertex]
   {:pre [(contains-vertex? graph vertex)]}
-  (???))
+  (set(map end(filter #(= vertex (start %))(arcs graph)))))
 
 (defn subgraph? [g1 g2]
-  (???))
+  (and (set/subset? (vertices g1) (vertices g2))
+       (set/subset? (arcs g1)    (arcs g2))))
