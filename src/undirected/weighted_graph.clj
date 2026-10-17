@@ -17,4 +17,4 @@
   (:weights weighted-graph))
 
 (defn total-weight [weighted-graph]
-  (???))
+  (reduce + (vals (weights weighted-graph))))

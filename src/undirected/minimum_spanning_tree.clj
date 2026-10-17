@@ -8,15 +8,22 @@
 
 (defn spanning-tree? [graph tree]
   {:pre [(connected? graph)]}
-  (???))
+  (and (g/subgraph? tree graph)
+       (= (g/vertices tree) (g/vertices graph))
+       (tree? tree)))
 
 (defn edge-incident-some-edge? [graph edge]
   {:pre [(not (g/contains-edge? graph edge))]}
-  (???))
+  (boolean
+    (some #(and (g/contains-vertex? graph %)
+                (seq (g/incident-edges graph %)))
+          (e/ends edge))))
 
 (defn edge-creates-cycle? [graph edge]
   {:pre [(not (g/contains-edge? graph edge))]}
-  (???))
+  (let [vs (e/ends edge)]
+    (and (every? #(g/contains-vertex? graph %) vs)
+         (apply connected-vertices? graph (seq vs)))))
 
 (defn minimum-spanning-tree-prim [graph]
   {:pre  [(connected? graph)]
@@ -26,7 +33,11 @@
            remaining-edges (rest edges)]
       (if (edge-count-tree? g)
         (make-weighted-graph g (weights graph))
-        (???)))))
+        (let [next-edge (first (filter #(and (edge-incident-some-edge? g %)
+                                             (not (edge-creates-cycle? g %)))
+                                       remaining-edges))]
+          (recur (g/add-edge g next-edge)
+                 (remove #{next-edge} remaining-edges)))))))
 
 (defn minimum-spanning-tree-kruskal [graph]
   {:pre  [(connected? graph)]
@@ -35,4 +46,7 @@
          remaining-edges (sort-by (weights graph) (g/edges graph))]
     (if (edge-count-tree? g)
       (make-weighted-graph g (weights graph))
-      (???))))
+      (let [next-edge (first (filter #(not (edge-creates-cycle? g %))
+                                     remaining-edges))]
+        (recur (g/add-edge g next-edge)
+               (remove #{next-edge} remaining-edges))))))
