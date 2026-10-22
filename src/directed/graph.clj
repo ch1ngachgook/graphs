@@ -28,7 +28,7 @@
   (contains? (vertices graph) vertex))
 
 (defn contains-arc? [graph arc]
-  (???))
+  (contains? (arcs graph) arc))
 
 (defn neighbours [graph vertex]
   {:pre [(contains-vertex? graph vertex)]}
