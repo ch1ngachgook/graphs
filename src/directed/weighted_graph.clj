@@ -1,7 +1,7 @@
 (ns directed.weighted-graph
   (:require [directed.arc :refer [arc]]
             [directed.graph :refer [arcs make-graph]]
-            [utils :refer [???]]))
+            [utils]))
 
 (defn make-weighted-graph [graph arc-weights]
   (assoc graph :weights (into {} (map (fn [e] [e (arc-weights e)])
@@ -20,4 +20,4 @@
   ((weights graph) (arc from to)))
 
 (defn route-length [graph route]
-  (???))
+  (reduce + (map (fn [a] ((weights graph) a)) (arcs route))))

@@ -1,7 +1,7 @@
 (ns directed.route
   (:require [directed.arc :refer [make-arc]]
             [directed.graph :as g]
-            [utils :refer [all-distinct? consecutive-pairs ???]]))
+            [utils :refer [all-distinct? consecutive-pairs]]))
 
 (defn make-route [vertices]
   {:vertices (vec vertices)
