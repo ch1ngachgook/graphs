@@ -115,6 +115,10 @@
   (let [g (weighted-graph [A B C] [A B 3])]
     (is (thrown-with-msg? Exception #"no path" (shortest-path-modified-dijkstra g A C)))))
 
+(deftest shortest-path-modified-dijkstra-no-path-to-other-vertex-test
+  (let [g (weighted-graph [A B C] [A B 3])]
+    (is (= (route A B) (shortest-path-modified-dijkstra g A B)))))
+
 (deftest shortest-path-modified-dijkstra-example-test
   (let [path (shortest-path-modified-dijkstra example-graph S T)]
     (is (contains? #{(route S A D T) (route S C D T)} path))

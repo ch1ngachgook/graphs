@@ -10,8 +10,12 @@
 (defn start [arc]
   (:start arc))
 
+(def from start)
+
 (defn end [arc]
   (:end arc))
+
+(def to end)
 
 (defn ends [arc]
   [(start arc) (end arc)])
