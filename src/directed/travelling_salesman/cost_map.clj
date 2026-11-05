@@ -1,6 +1,6 @@
 (ns directed.travelling-salesman.cost-map
   (:require [directed.arc :refer [ends from to]]
-            [utils :refer [???]]))
+            [utils :refer [all-distinct?]]))
 
 (defn reduce-costs-by
   "Выполняет один из этапов приведения матрицы (либо по строкам, либо по столбцам).
@@ -21,12 +21,12 @@
   [cost-map]
   (let [[cm-from min-costs-sum-from] (reduce-costs-by cost-map from)
         [cm-from-to min-costs-sum-to] (reduce-costs-by cm-from to)]
-    [(???) (???)]))
+    [cm-from-to (+ min-costs-sum-from min-costs-sum-to)]))
 
 (defn zero-cost-arcs
   "Возвращает набор дуг, соответствующих нулевым элементам в матрице стоимости."
   [cost-map]
-  (???))
+  (set (filter #(zero? (cost-map %)) (keys cost-map))))
 
 (defn arc-penalty
   "Вычисляет штраф для данной дуги."
@@ -41,11 +41,17 @@
 (defn highest-penalty-arc
   "Из всех дуг с нулевой стоимостью, возвращает дугу с максимальным штрафом."
   [cost-map]
-  (???))
+  (apply max-key #(arc-penalty cost-map %) (zero-cost-arcs cost-map)))
 
 (defn eliminate-related-arcs
   "Удаляет из матрицы стоимости строку и столбец, соответствующий данной дуге.
   То есть удаляет дуги, у которых начало совпадает с началом данной дуги,
   и дуги, у которых конец совпадает с концом данной дуги."
   [cost-map arc]
-  (???))
+  (let [i (from arc)
+        j (to arc)]
+    (into {}
+          (remove (fn [[a _]]
+                    (or (= (from a) i)
+                        (= (to a) j))))
+          cost-map)))

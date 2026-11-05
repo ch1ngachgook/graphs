@@ -1,24 +1,20 @@
 (ns directed.travelling-salesman.route
-  (:require [directed.arc :as a :refer [ends from to]]
+  (:require [directed.arc :as a :refer [ends from to make-arc]]
             [directed.graph :as g]
             [directed.route :as r :refer [make-route]]
-            [utils :refer [???]]))
+            [utils :refer [all-distinct?]]))
 
-(defn hamiltonian-cycle?
-  "Проверяет, что маршрут является гамильтоновым циклом в данном графе"
-  [graph route]
-  (???))
+(defn hamiltonian-cycle? [graph route]
+  (and (r/cycle? route)
+       (r/graph-contains-route? graph route)
+       (= (set (r/vertices route))
+          (g/vertices graph))))
 
-(defn closing-arc
-  "Возвращает дугу, соединяющую конец и начало маршрута
-  (добавление такой дуги к маршруту делает его циклическим)."
-  [route]
-  (???))
+(defn closing-arc [route]
+  (make-arc [(r/end route) (r/start route)]))
 
-(defn close-route
-  "Замыкает маршрут, делает его циклическим"
-  [route]
-  (???))
+(defn close-route [route]
+  (make-route (conj (r/vertices route) (r/start route))))
 
 (defn connect-routes-by-arc
   "Присоединяет к дуге маршруты из данного набора,
@@ -28,7 +24,7 @@
   Возвращает полученный новый маршрут и обновлённый набор маршрутов."
   [arc routes]
   (let [before (first (filter #(= (r/end %) (from arc)) routes))
-        after (first (filter #(= (r/start %) (to arc)) routes))
+        after  (first (filter #(= (r/start %) (to arc)) routes))
         new-route (make-route (concat (butlast (r/vertices before))
                                       (ends arc)
                                       (rest (r/vertices after))))
