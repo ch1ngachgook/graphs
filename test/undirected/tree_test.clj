@@ -15,6 +15,7 @@
   (is (tree? (graph [A])))
   (is (tree? (graph [A B] [A B])))
   (is (not (tree? (graph [A B]))))
+  (is (not (tree? (graph [A B C D] [A B] [A C] [B C]))))
   (is (not (tree? (graph [A B C] [A B] [B C] [C A])))))
 
 (deftest forest?-test
