@@ -76,6 +76,7 @@
   (is (circuit? (route A)))
   (is (circuit? (route A B C A)))
   (is (circuit? (route A B A)))
+  (is (not (circuit? (route A B C D))))
   (is (not (circuit? (route A B C B A))))
   (is (not (circuit? (route A B C D B))))
   (is (not (circuit? (route A B C D B E A)))))
