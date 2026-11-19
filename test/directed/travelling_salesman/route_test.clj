@@ -7,7 +7,7 @@
   (:use [directed.travelling-salesman.route]))
 
 (deftest hamiltonian-cycle?-test
-  (let [g (graph [A B C D] [A B] [B C] [C A] [C D] [D A])]
+  (let [g (graph [A B C D] [A B] [B C] [A D] [C A] [C D] [D A])]
     (is (hamiltonian-cycle? g (route A B C D A))
         "Гамильтонов цикл")
     (is (hamiltonian-cycle? g (route B C D A B))
@@ -21,6 +21,8 @@
     (is (not (hamiltonian-cycle? g (route A B C A)))
         "Маршрут должен содержать все вершины графа")
     (is (not (hamiltonian-cycle? g (route A B C D A B C D A)))
+        "Все дуги маршрута должны быть различны")
+    (is (not (hamiltonian-cycle? g (route A B C A D A)))
         "Маршрут должен проходить через каждую промежуточную вершину один раз")))
 
 (deftest closing-arc-test

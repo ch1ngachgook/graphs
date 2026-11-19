@@ -19,3 +19,12 @@
 
 (defn ends [arc]
   [(start arc) (end arc)])
+
+(defn arc-fn
+  "Создаёт функцию, которая принимает заданные значения на данных дугах,
+  а в остальных случаях возвращает 0.
+  Дуги заданы в виде троек (начало дуги, конец дуги, значение функции на этой дуге)."
+  [& arc-values]
+  (let [value-map (into {} (map (fn [[from to value]] [(arc from to) value])
+                                arc-values))]
+    (fn [a] (get value-map a 0))))
