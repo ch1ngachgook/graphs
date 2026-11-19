@@ -37,19 +37,21 @@
   "Проверяет, является ли вершина полюсом (либо источником, либо стоком)."
   [network vertex]
   {:pre [(g/contains-vertex? network vertex)]}
-  (???))
+  (or (= vertex (source network))
+      (= vertex (target network))))
 
 (defn internal-vertices
   "Возвращает множество внутренних вершин сети."
   [network]
-  (???))
+  (disj (vertices network)
+                  (source network) (target network)))
 
 (defn incoming-arcs
   "Возвращает множество дуг, входящих в вершину."
   [graph vertex]
-  (???))
+  (set/select #(= vertex (to %)) (arcs graph)))
 
 (defn outgoing-arcs
   "Возвращает множество дуг, выходящих из вершины."
   [graph vertex]
-  (???))
+  (set (filter #(= vertex (from %)) (arcs graph))))

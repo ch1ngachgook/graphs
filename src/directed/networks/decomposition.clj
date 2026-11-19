@@ -10,13 +10,20 @@
   "Проверяет, что маршрут является элементарным путём."
   [network route]
   {:pre [(r/graph-contains-route? network route)]}
-  (???))
+  (or (r/circuit? route)
+      (and (r/path? route)
+           (n/terminal? network (r/start route))
+           (n/terminal? network (r/end route)))))
 
 (defn elementary-path-flow
   "Возвращает элементарный поток для данного элементарного пути -
   функцию, которая на дугах пути принимает данное значение, а на остальных дугах равна нулю."
   [value path]
-  (???))
+  (let [path-arcs (set (r/arcs path))]
+    (fn [a]
+      (if (contains? path-arcs a)
+        value
+        0))))
 
 (defn find-positive-arc
   "Находит в сети дугу, на которой поток принимает положительное значение.
@@ -57,11 +64,11 @@
   {:pre [(f/positive-flow? network flow)]}
   (loop [remaining-flow flow
          elements []]
-    (if (???)
+    (if (f/zero-flow? network remaining-flow)
       elements
       (let [path (find-positive-elementary-path network remaining-flow)
-            value (???)
-            path-flow (???)]
+            value (apply min (map remaining-flow [r/arcs path]))
+            path-flow (elementary-path-flow value path)]
         (assert (f/positive-flow? network path-flow))
-        (recur (???)
-               (???))))))
+        (recur (f/subtract-flow remaining-flow path-flow)
+               (conj elements [path value]))))))

@@ -8,7 +8,8 @@
   (and (r/cycle? route)
        (r/graph-contains-route? graph route)
        (= (set (r/vertices route))
-          (g/vertices graph))))
+          (g/vertices graph))
+       (all-distinct? (butlast (r/vertices route)))))
 
 (defn closing-arc [route]
   (make-arc [(r/end route) (r/start route)]))
